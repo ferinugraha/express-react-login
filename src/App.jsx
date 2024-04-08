@@ -7,7 +7,7 @@ import PageBarangDetail from "./pages/barang/PageBarangDetail";
 import { ContextApplication } from "./libs/config/contexts";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   return (
     <>

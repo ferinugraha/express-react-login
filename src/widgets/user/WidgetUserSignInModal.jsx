@@ -1,7 +1,6 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { ContextApplication } from "../../libs/config/contexts";
-import { Button, Form } from "react-bootstrap";
-import { Modal } from "react-bootstrap";
+import { Button, Form, Modal } from "react-bootstrap";
 import useJWT from "../../libs/hooks/useJWT";
 import useHTTP from "../../libs/hooks/useHTTP";
 import useMessage from "../../libs/hooks/useMessage";
@@ -15,9 +14,9 @@ const WidgetUserSignInModal = () => {
   const jwt = useJWT();
   const http = useHTTP();
   const message = useMessage();
-  const chageListener = useChangeListener();
+  const changeListener = useChangeListener();
 
-  const { user, setUser } = useState(UserInit);
+  const [user, setUser] = useState(UserInit);
   const userValidator = useValidator(UserValidator);
 
   const SignIn = () => {
@@ -33,50 +32,51 @@ const WidgetUserSignInModal = () => {
         console.log(response.data.token);
       })
       .catch((error) => {
-        message.error(response.data.token);
-        userValidator.axcept(error);
+        message.error(error.response.data.token);
+        userValidator.accept(error);
       });
   };
 
   return (
-    <>
-      <Modal
-        show={!application.isAuthenticated}
-        centered={true}
-        onHide={() => {}}
-        backdrop={"static"}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Sign In</Modal.Title>
-          <Modal.Body>
-            <Form.Group ClassName="mb-3">
-              <Form.Lable>Email</Form.Lable>
-              <Form.Control
-                name="email"
-                placeholder="Enter email"
-                value={user.email}
-                onChange={(e) => chageListener.changeText(e, user, setUser)}
-              />
-            </Form.Group>
-            <Form.Group ClassName="mb-3">
-              <Form.Lable>Password</Form.Lable>
-              <Form.Control
-                type="password"
-                name="password"
-                placeholder="Enter password"
-                value={user.password}
-                onChange={(e) => chageListener.changeText(e, user, setUser)}
-              />
-            </Form.Group>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="primary" onClick={SignIn}>
-              Sign In
-            </Button>
-          </Modal.Footer>
-        </Modal.Header>
-      </Modal>
-    </>
+    <Modal
+      show={!application.isAuthenticated}
+      centered={true}
+      onHide={() => {}}
+      backdrop={"static"}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title>Sign In</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              name="email"
+              placeholder="Enter email"
+              value={user.email}
+              onChange={(e) => changeListener.changeText(e, setUser)}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              name="password"
+              placeholder="Enter password"
+              value={user.password}
+              onChange={(e) => changeListener.changeText(e, setUser)}
+            />
+          </Form.Group>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="primary" onClick={SignIn}>
+          Sign In
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 
