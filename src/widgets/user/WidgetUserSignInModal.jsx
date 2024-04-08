@@ -28,6 +28,8 @@ const WidgetUserSignInModal = () => {
     http.publicHttp
       .post(url, user)
       .then((response) => {
+        jwt.setToken(response.data.token);
+        application.setIsAuthenticated(true);
         console.log(response.data.token);
       })
       .catch((error) => {
